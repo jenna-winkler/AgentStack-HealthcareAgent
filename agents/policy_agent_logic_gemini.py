@@ -1,7 +1,7 @@
 import base64
 from pathlib import Path
 from typing import Optional
-
+import os
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -15,7 +15,7 @@ class GeminiPolicyAgent:
     def __init__(
         self,
         pdf_path: Optional[str] = None,
-        model: str = "gemini-1.5-flash",
+        model: str = "gemini-2.5-flash-lite",
         system_prompt: str = (
             "You are an expert insurance agent designed to assist with coverage queries. "
             "Use the provided documents to answer questions about insurance policies. "
@@ -23,7 +23,8 @@ class GeminiPolicyAgent:
         ),
         max_output_tokens: int = 1024,
     ) -> None:
-        load_dotenv()
+        # Ensure .env values are picked up even when the working directory differs.
+        self._load_env()
         api_key = self._get_gemini_api_key()
         genai.configure(api_key=api_key)
 
@@ -49,6 +50,17 @@ class GeminiPolicyAgent:
             if value:
                 return value
         raise RuntimeError("Gemini API key not found. Set GEMINI_API_KEY (or GEMINI_APIKEY).")
+
+    @staticmethod
+    def _load_env() -> None:
+        """
+        Load environment variables from the repo .env file plus the current working directory.
+
+        This handles cases where the process is started outside the project root.
+        """
+        project_env = Path(__file__).resolve().parent.parent / ".env"
+        load_dotenv(project_env)
+        load_dotenv()
 
     @staticmethod
     def _load_pdf(path: Path) -> bytes:
