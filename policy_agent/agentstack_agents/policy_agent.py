@@ -99,7 +99,7 @@ policy_agent = PolicyAgent()
 
 
 @server.agent(
-    name="Policy Agent",
+    name="PolicyAgent",
 )
 async def policy_agent_wraper(
     input: Message,

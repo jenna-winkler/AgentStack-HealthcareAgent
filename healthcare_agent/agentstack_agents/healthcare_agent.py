@@ -121,14 +121,17 @@ async def healthcare_concierge(
 
     #Make the other AgentStack agents discoverable for the handoff tool
     agents = await AgentStackAgent.from_agent_stack(states={AgentStackAgentStatus.ONLINE})
-    handoff_agents = {a for a in agents if a.name in {"Policy Agent"}}
+    handoff_agents = {a for a in agents if a.name in {"PolicyAgent"}}
+    print([a.name for a in agents])
     handoff_tools = [HandoffTool(a) for a in handoff_agents]
+
+    think_tool=ThinkTool()
 
     #ADD IN THE REAL INSTRUCTION WHEN ADDING IN THE HANDOFF TOOL
     instructions = (
         "You are a friendly healthcare concierge. "
         "Answer questions about plan coverage, in-network providers, and costs. "
-        "Hand off your task to the Policy Agent when there are specific questions pertaining to the user's policy details."
+        "Hand off your task to the PolicyAgent when there are specific questions pertaining to the user's policy details."
         "If unsure, ask clarifying questions before giving guidance."
     )
 
@@ -136,8 +139,9 @@ async def healthcare_concierge(
         llm=llm_client,
         name="HealthcareConcierge",
         memory=memory,
-        tools=[ThinkTool(), *handoff_tools],
-        requirements=[ConditionalRequirement(ThinkTool(), force_at_step=1),],
+        tools=[think_tool, *handoff_tools],
+        requirements=[ConditionalRequirement(think_tool, force_at_step=1),
+                      ConditionalRequirement(HandoffTool, min_invocations=1)],
         role="Healthcare Concierge",
         instructions=instructions,
     )
