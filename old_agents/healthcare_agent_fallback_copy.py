@@ -24,10 +24,10 @@ from beeai_framework.backend import ChatModelParameters
 from beeai_framework.backend.message import AssistantMessage, UserMessage
 from beeai_framework.memory import UnconstrainedMemory
 from beeai_framework.tools.think import ThinkTool
-from beeai_framework.tools.handoff import HandoffTool
 from beeai_framework.adapters.agentstack.agents import AgentStackAgent
 from beeai_framework.adapters.agentstack.agents.types import AgentStackAgentStatus
-
+from beeai_framework.adapters.agentstack.backend.chat import AgentStackChatModel
+from beeai_framework.adapters.agentstack.serve.server import AgentStackServer
 
 server = Server()
 memories: dict[str, UnconstrainedMemory] = {}
@@ -118,26 +118,20 @@ async def healthcare_concierge(
         tool_choice_support={"auto", "required"},
     )
 
-
-    #Make the other AgentStack agents discoverable for the handoff tool
-    agents = await AgentStackAgent.from_agent_stack(states={AgentStackAgentStatus.ONLINE})
-    handoff_agents = {a for a in agents if a.name in {"Policy Agent"}}
-    handoff_tools = [HandoffTool(a) for a in handoff_agents]
+    think_tool = ThinkTool()
 
     #ADD IN THE REAL INSTRUCTION WHEN ADDING IN THE HANDOFF TOOL
     instructions = (
         "You are a friendly healthcare concierge. "
         "Answer questions about plan coverage, in-network providers, and costs. "
-        "Hand off your task to the Policy Agent when there are specific questions pertaining to the user's policy details."
         "If unsure, ask clarifying questions before giving guidance."
     )
 
     agent = RequirementAgent(
         llm=llm_client,
-        name="HealthcareConcierge",
         memory=memory,
-        tools=[ThinkTool(), *handoff_tools],
-        requirements=[ConditionalRequirement(ThinkTool(), force_at_step=1),],
+        tools=[think_tool],
+        requirements=[ConditionalRequirement(think_tool, force_at_step=1)],
         role="Healthcare Concierge",
         instructions=instructions,
     )
