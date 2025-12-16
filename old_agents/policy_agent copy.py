@@ -2,68 +2,38 @@ import asyncio
 import base64
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Annotated, Optional
 
-import google.generativeai as genai
 from a2a.types import Message
 from a2a.utils.message import get_message_text
+from agentstack_sdk.a2a.extensions import LLMServiceExtensionServer, LLMServiceExtensionSpec
 from agentstack_sdk.a2a.types import AgentMessage
 from agentstack_sdk.server import Server
 from agentstack_sdk.server.context import RunContext
-from dotenv import load_dotenv
+from beeai_framework.adapters.openai import OpenAIChatModel
+from beeai_framework.backend import ChatModelParameters
+from beeai_framework.backend.message import SystemMessage, UserMessage
 
 
 class PolicyAgent:
     """
     A policy agent that reads a benefits PDF and answers coverage questions.
-    Original logic preserved in spirit: load PDF, add it to the prompt, return concise answers.
     """
 
     def __init__(
         self,
         pdf_path: Optional[str] = None,
-        model: str = "gemini-2.5-flash-lite",
         system_prompt: str = (
             "You are an expert insurance agent designed to assist with coverage queries. "
             "Use the provided documents to answer questions about insurance policies. "
             "If the information is not available in the documents, respond with \"I don't know\"."
         ),
-        max_output_tokens: int = 1024,
     ) -> None:
-        # Ensure .env values are picked up even when the working directory differs.
-        self._load_env()
-        api_key = self._get_gemini_api_key()
-        genai.configure(api_key=api_key)
-
-        self.model = genai.GenerativeModel(model)
-        self.max_output_tokens = max_output_tokens
         self.system_prompt = system_prompt
 
-        # Default to the same PDF used by the original policy agent
         self.pdf_path = Path(pdf_path) if pdf_path else Path(__file__).resolve().parent / "2026AnthemgHIPSBC.pdf"
         self.pdf_bytes = self._load_pdf(self.pdf_path)
-
-    @staticmethod
-    def _get_gemini_api_key() -> str:
-        """
-        Load the Gemini API key from common env var names.
-        """
-        for key in ("GEMINI_API_KEY"):
-            value = os.environ.get(key)
-            if value:
-                return value
-        raise RuntimeError("Gemini API key not found. Set GEMINI_API_KEY.")
-
-    @staticmethod
-    def _load_env() -> None:
-        """
-        Load environment variables from the repo .env file plus the current working directory.
-
-        This handles cases where the process is started outside the project root.
-        """
-        project_env = Path(__file__).resolve().parent.parent / ".env"
-        load_dotenv(project_env)
-        load_dotenv()
+        self.pdf_base64 = base64.b64encode(self.pdf_bytes).decode("ascii")
 
     @staticmethod
     def _load_pdf(path: Path) -> bytes:
@@ -71,34 +41,44 @@ class PolicyAgent:
             raise FileNotFoundError(f"PDF not found at {path.resolve()}")
         return path.read_bytes()
 
-    def answer_query(self, prompt: str) -> str:
-        """
-        Send the user prompt and the embedded PDF to Gemini and return the text response.
-        """
-        parts = [
-            {"text": self.system_prompt},
-            {
-                "inline_data": {
-                    "mime_type": "application/pdf",
-                    "data": self.pdf_bytes,
-                }
-            },
-            {"text": prompt},
-        ]
-
-        response = self.model.generate_content(
-            parts,
-            generation_config={"max_output_tokens": self.max_output_tokens},
+    def build_prompt(self, prompt: str) -> str:
+        return (
+            f"{self.system_prompt}\n\n"
+            "Reference policy document (base64-encoded PDF). Decode and use it to answer the question. "
+            "If the details are not present, reply with \"I don't know\".\n"
+            f"Policy PDF (base64): {self.pdf_base64}\n\n"
+            f"User question: {prompt}"
         )
 
-        if not response or not response.text:
-            return "I don't know"
+    async def answer_query(self, prompt: str, llm_config) -> str:
+        """
+        Send the user prompt plus embedded PDF to the LLM provided by the platform extension.
+        """
+        if not llm_config or not llm_config.api_key:
+            return "LLM service not available. Please enable the LLM extension for this agent."
 
-        # Maintain escaping behavior similar to the original agent
-        return response.text.replace("$", r"\\$")
+        llm_client = OpenAIChatModel(
+            model_id=llm_config.api_model,
+            base_url=llm_config.api_base,
+            api_key=llm_config.api_key,
+            parameters=ChatModelParameters(temperature=0, stream=False),
+            tool_choice_support={"auto", "required"},
+        )
 
+        response = await llm_client.run(
+            [
+                SystemMessage(self.system_prompt),
+                SystemMessage(
+                    "Policy PDF (base64). Decode and consult this document when answering:\n"
+                    f"{self.pdf_base64}"
+                ),
+                UserMessage(prompt),
+            ],
+        )
 
-load_dotenv()
+        text = response.get_text_content() if hasattr(response, "get_text_content") else None
+        return text or "I don't know"
+
 
 server = Server()
 policy_agent = PolicyAgent()
@@ -107,11 +87,29 @@ policy_agent = PolicyAgent()
 @server.agent(
     name="Policy Agent",
 )
-async def policy_agent_wraper(input: Message, context: RunContext):
-    """Wrapper around the policy agent."""
+async def policy_agent_wraper(
+    input: Message,
+    context: RunContext,
+    llm: Annotated[
+        LLMServiceExtensionServer,
+        LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash",)),
+    ],
+):
+    """Wrapper around the policy agent using the AgentStack LLM extension."""
     prompt = get_message_text(input)
-    loop = asyncio.get_running_loop()
-    response = await loop.run_in_executor(None, policy_agent.answer_query, prompt)
+    llm_config = None
+
+    if llm and llm.data and llm.data.llm_fulfillments:
+        llm_config = llm.data.llm_fulfillments.get("default")
+    else:
+        yield AgentMessage(text="LLM selection is required.")
+        return
+
+    if not llm_config:
+        yield AgentMessage(text="No LLM configuration available from the extension.")
+        return
+
+    response = await policy_agent.answer_query(prompt, llm_config)
     yield AgentMessage(text=response)
 
 
