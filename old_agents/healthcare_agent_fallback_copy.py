@@ -1,4 +1,3 @@
-import json
 import os
 from typing import Annotated
 
@@ -25,10 +24,10 @@ from beeai_framework.backend import ChatModelParameters
 from beeai_framework.backend.message import AssistantMessage, UserMessage
 from beeai_framework.memory import UnconstrainedMemory
 from beeai_framework.tools.think import ThinkTool
-from beeai_framework.tools.handoff import HandoffTool
 from beeai_framework.adapters.agentstack.agents import AgentStackAgent
 from beeai_framework.adapters.agentstack.agents.types import AgentStackAgentStatus
-
+from beeai_framework.adapters.agentstack.backend.chat import AgentStackChatModel
+from beeai_framework.adapters.agentstack.serve.server import AgentStackServer
 
 server = Server()
 memories: dict[str, UnconstrainedMemory] = {}
@@ -48,18 +47,6 @@ def to_framework_message(message: Message):
     if message.role == Role.agent:
         return AssistantMessage(message_text)
     return UserMessage(message_text)
-
-
-def summarize_for_trajectory(data: object, limit: int = 400) -> str:
-    """
-    Convert tool inputs/outputs to a readable, bounded string for trajectory updates.
-    """
-    try:
-        text = data if isinstance(data, str) else json.dumps(data, default=str)
-    except Exception:
-        text = str(data)
-
-    return text if len(text) <= limit else f"{text[:limit]}... [truncated]"
 
 
 @server.agent(
@@ -92,7 +79,7 @@ async def healthcare_concierge(
     trajectory: Annotated[TrajectoryExtensionServer, TrajectoryExtensionSpec()],
     llm: Annotated[
         LLMServiceExtensionServer,
-        LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash-lite",)),
+        LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash",)),
     ],
 ):
     """
@@ -131,30 +118,20 @@ async def healthcare_concierge(
         tool_choice_support={"auto", "required"},
     )
 
-
-    #Make the other AgentStack agents discoverable for the handoff tool
-    agents = await AgentStackAgent.from_agent_stack(states={AgentStackAgentStatus.ONLINE})
-    handoff_agents = {a for a in agents if a.name in {"PolicyAgent"}}
-    print([a.name for a in agents])
-    handoff_tools = [HandoffTool(a) for a in handoff_agents]
-
-    think_tool=ThinkTool()
+    think_tool = ThinkTool()
 
     #ADD IN THE REAL INSTRUCTION WHEN ADDING IN THE HANDOFF TOOL
     instructions = (
         "You are a friendly healthcare concierge. "
         "Answer questions about plan coverage, in-network providers, and costs. "
-        "Hand off your task to the PolicyAgent when there are specific questions pertaining to the user's policy details."
         "If unsure, ask clarifying questions before giving guidance."
     )
 
     agent = RequirementAgent(
         llm=llm_client,
-        name="HealthcareConcierge",
         memory=memory,
-        tools=[think_tool, *handoff_tools],
-        requirements=[ConditionalRequirement(think_tool, force_at_step=1),
-                      ConditionalRequirement(HandoffTool, min_invocations=1)],
+        tools=[think_tool],
+        requirements=[ConditionalRequirement(think_tool, force_at_step=1)],
         role="Healthcare Concierge",
         instructions=instructions,
     )
@@ -182,27 +159,6 @@ async def healthcare_concierge(
             if step.tool and step.tool.name == "think":
                 thoughts = step.input.get("thoughts", "Planning response.")
                 yield trajectory.trajectory_metadata(title="Thinking", content=thoughts[:200])
-            elif step.tool:
-                tool_name = step.tool.name
-                if tool_name != "final_answer":
-                    yield trajectory.trajectory_metadata(
-                        title=f"{tool_name} (request)",
-                        content=summarize_for_trajectory(step.input),
-                    )
-
-                    if getattr(step, "error", None):
-                        yield trajectory.trajectory_metadata(
-                            title=f"{tool_name} (error)",
-                            content=step.error.explain(),
-                        )
-                    else:
-                        output_text = (
-                            step.output.get_text_content() if getattr(step, "output", None) else "No output"
-                        )
-                        yield trajectory.trajectory_metadata(
-                            title=f"{tool_name} (response)",
-                            content=summarize_for_trajectory(output_text),
-                        )
 
     await context.store(AgentMessage(text=response_text))
 

@@ -99,14 +99,14 @@ policy_agent = PolicyAgent()
 
 
 @server.agent(
-    name="Policy Agent",
+    name="PolicyAgent",
 )
 async def policy_agent_wraper(
     input: Message,
     context: RunContext,
     llm: Annotated[
         LLMServiceExtensionServer,
-        LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash",)),
+        LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash-lite",)),
     ],
 ):
     """Wrapper around the policy agent using the AgentStack LLM extension."""
