@@ -25,7 +25,7 @@ from agentstack_sdk.a2a.extensions import (
     LLMServiceExtensionServer, LLMServiceExtensionSpec
 )
 from agentstack_sdk.server import Server
-from streaming_citation_parser import StreamingCitationParser
+from .streaming_citation_parser import StreamingCitationParser
 
 server = Server()
 
