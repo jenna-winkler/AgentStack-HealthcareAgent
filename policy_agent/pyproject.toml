@@ -28,7 +28,7 @@ dependencies = [
 
 
 [project.scripts]
-server = "agentstack_agents.provider_agent:run"
+server = "agentstack_agents.policy_agent:run"
 
 [tool.uv]
 package = true
