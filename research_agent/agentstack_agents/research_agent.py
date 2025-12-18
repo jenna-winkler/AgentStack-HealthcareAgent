@@ -64,7 +64,7 @@ class GoogleSearchTool(Tool[GoogleSearchToolInput, ToolRunOptions, JSONToolOutpu
 
 
 @server.agent(
-    name="Research Agent",
+    name="ResearchAgent",
     detail=AgentDetail(
         interaction_mode="multi-turn",
         user_greeting="Hi! I'm a Health Research Agent using Google search powered by Serper API.",
