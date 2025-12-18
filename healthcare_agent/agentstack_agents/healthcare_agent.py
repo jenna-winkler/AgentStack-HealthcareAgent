@@ -134,7 +134,7 @@ async def healthcare_concierge(
 
     #Make the other AgentStack agents discoverable for the handoff tool
     agents = await AgentStackAgent.from_agent_stack(states={AgentStackAgentStatus.ONLINE})
-    handoff_agents = {a for a in agents if a.name in {"PolicyAgent"}}
+    handoff_agents = {a for a in agents if a.name in {"PolicyAgent","ResearchAgent","ProviderAgent"}}
     print([a.name for a in agents])
     handoff_tools = [HandoffTool(a) for a in handoff_agents]
 
@@ -145,6 +145,8 @@ async def healthcare_concierge(
         "You are a friendly healthcare concierge. "
         "Answer questions about plan coverage, in-network providers, and costs. "
         "Hand off your task to the PolicyAgent when there are specific questions pertaining to the user's policy details."
+        "Hand off your task to the ResearchAgent when you need information about symptoms, health conditions, treatments, and procedures using up-to-date web resources."
+        "Hand off your task to the ProviderAgent when you need information about the providers in network."
         "If unsure, ask clarifying questions before giving guidance."
     )
 
@@ -154,7 +156,10 @@ async def healthcare_concierge(
         memory=memory,
         tools=[think_tool, *handoff_tools],
         requirements=[ConditionalRequirement(think_tool, force_at_step=1),
-                      ConditionalRequirement(HandoffTool, min_invocations=1)],
+                      ConditionalRequirement(handoff_tools[0], min_invocations=1, max_invocations=1),
+                      ConditionalRequirement(handoff_tools[1], min_invocations=1, max_invocations=1),
+                      ConditionalRequirement(handoff_tools[2], min_invocations=1, max_invocations=1),
+                      ],
         role="Healthcare Concierge",
         instructions=instructions,
     )

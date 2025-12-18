@@ -58,7 +58,7 @@ class GoogleSearchTool(Tool[GoogleSearchToolInput, ToolRunOptions, JSONToolOutpu
 
 
 @server.agent(
-    name="Research Agent",
+    name="ResearchAgent",
     detail=AgentDetail(
         interaction_mode="multi-turn",
         variables=[
