@@ -105,7 +105,7 @@ async def provider_agent_wrapper(
 
 def run() -> None:
     host = os.getenv("AGENT_HOST", "127.0.0.1")
-    port = int(os.getenv("PROVIDER_AGENT_PORT", 9246))
+    port = int(os.getenv("PROVIDER_AGENT_PORT", 8000))
     server.run(host=host, port=port)
 
 
