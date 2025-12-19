@@ -17,6 +17,10 @@ from agentstack_sdk.a2a.extensions import (
     TrajectoryExtensionServer,
     TrajectoryExtensionSpec,
 )
+from agentstack_sdk.a2a.extensions.services.platform import (
+    PlatformApiExtensionServer,
+    PlatformApiExtensionSpec,
+)
 from beeai_framework.adapters.openai import OpenAIChatModel
 from beeai_framework.agents.requirement import RequirementAgent
 from beeai_framework.agents.requirement.requirements.conditional import ConditionalRequirement
@@ -96,6 +100,7 @@ async def healthcare_concierge(
         LLMServiceExtensionServer,
         LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash-lite",)),
     ],
+    platform: Annotated[PlatformApiExtensionServer, PlatformApiExtensionSpec()],
 ):
     """
     Healthcare concierge agent that answers insurance and provider questions.
@@ -135,14 +140,29 @@ async def healthcare_concierge(
         tool_choice_support={"auto", "required"},
     )
 
-
-    # Make other AgentStack agents discoverable that have been deployed to the platform and make them available via handoff tools
-    agents = await AgentStackAgent.from_agent_stack()
-    handoff_agents = {a.name: a for a in agents if a.name in {"PolicyAgent", "ResearchAgent", "ProviderAgent"}}
-    print([a.name for a in agents])
-    policy_handoff = HandoffTool(handoff_agents["PolicyAgent"])
-    research_handoff = HandoffTool(handoff_agents["ResearchAgent"])
-    provider_handoff = HandoffTool(handoff_agents["ProviderAgent"])
+    # Make the other AgentStack agents discoverable for the handoff tool
+    try:
+        async with platform.use_client() as client:
+            agents = await AgentStackAgent.from_agent_stack(url=client)
+            handoff_agents = {a.name: a for a in agents if a.name in {"PolicyAgent", "ResearchAgent", "ProviderAgent"}}
+            
+            yield trajectory.trajectory_metadata(
+                title="Agent Discovery",
+                content=f"Found {len(agents)} total agents, {len(handoff_agents)} available for handoff"
+            )
+            
+            print([a.name for a in agents])
+            policy_handoff = HandoffTool(handoff_agents["PolicyAgent"])
+            research_handoff = HandoffTool(handoff_agents["ResearchAgent"])
+            provider_handoff = HandoffTool(handoff_agents["ProviderAgent"])
+            
+    except Exception as e:
+        yield trajectory.trajectory_metadata(
+            title="Agent Discovery Error",
+            content=f"Failed to discover agents: {str(e)}"
+        )
+        yield f"I'm unable to access specialized agents right now. Error: {str(e)}"
+        return
 
     think_tool=ThinkTool()
 
