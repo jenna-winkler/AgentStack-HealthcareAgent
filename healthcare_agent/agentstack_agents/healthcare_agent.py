@@ -189,7 +189,7 @@ async def healthcare_concierge(
             step = event.state.steps[-1]
             if step.tool and step.tool.name == "think":
                 thoughts = step.input.get("thoughts", "Planning response.")
-                yield trajectory.trajectory_metadata(title="Thinking", content=thoughts[:200])
+                yield trajectory.trajectory_metadata(title="Thinking", content=thoughts)
             elif step.tool:
                 tool_name = step.tool.name
                 if tool_name != "final_answer":
