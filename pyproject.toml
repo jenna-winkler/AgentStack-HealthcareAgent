@@ -9,7 +9,7 @@ dependencies = [
     "agent-framework-a2a==1.0.0b251120",
     "agentstack-sdk==0.4.3",
     "anthropic[vertex]==0.72.0",
-    "beeai-framework[a2a,vertexai]==0.1.70",
+    "beeai-framework[a2a,vertexai]==0.1.74",
     "dotenv>=0.9.9",
     "google-adk[a2a]==1.19.0",
     "google-auth==2.42.0",

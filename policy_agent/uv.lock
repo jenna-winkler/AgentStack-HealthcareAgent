@@ -411,7 +411,7 @@ wheels = [
 
 [[package]]
 name = "beeai-framework"
-version = "0.1.73"
+version = "0.1.74"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -425,9 +425,9 @@ dependencies = [
     { name = "pydantic-settings" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/40/74/6b9b020609a71f6671c3543bf3838b067663098918e5bda61caba474c570/beeai_framework-0.1.73.tar.gz", hash = "sha256:008d44b66b07a2d80c1fa36d0da1504dc92f84185a9bec67a6b90ed9534f6620", size = 185920, upload-time = "2025-12-11T17:51:06.216Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/d5/19d2a202edf61e629148aa63ec35e0ca2a9073183a66499aaa8f36b1ff9f/beeai_framework-0.1.74.tar.gz", hash = "sha256:1b0dd9114e0099b0f43e63d8951f05407499e4c371e387e27ef123b803211c69", size = 189160, upload-time = "2025-12-22T12:57:49.157Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cc/66/f43d85ba1ab5b571974d6b191c97b181e3b2ba4535f1abc9b03f609dee4b/beeai_framework-0.1.73-py3-none-any.whl", hash = "sha256:c3978289648c9dcbf5816add777ccdbb2fa2b578786c01dd3c6c006d8b02c4b1", size = 342516, upload-time = "2025-12-11T17:51:04.882Z" },
+    { url = "https://files.pythonhosted.org/packages/5c/b0/62b5646b80f91930363fc01d12dea595d401d28445dd5e0744c97f0cf3bc/beeai_framework-0.1.74-py3-none-any.whl", hash = "sha256:9958f79ba917b3769572df6507513bdecf5ca4d2f62d22389e93a3f4b7dd9ac6", size = 347954, upload-time = "2025-12-22T12:57:47.806Z" },
 ]
 
 [package.optional-dependencies]
@@ -2936,7 +2936,7 @@ requires-dist = [
     { name = "agent-framework-a2a", specifier = "==1.0.0b251120" },
     { name = "agentstack-sdk", specifier = "==0.4.3" },
     { name = "anthropic", extras = ["vertex"], specifier = "==0.72.0" },
-    { name = "beeai-framework", extras = ["a2a", "vertexai"], specifier = "==0.1.73" },
+    { name = "beeai-framework", extras = ["a2a", "vertexai"], specifier = "==0.1.74" },
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "google-adk", extras = ["a2a"], specifier = "==1.19.0" },
     { name = "google-auth", specifier = "==2.42.0" },
