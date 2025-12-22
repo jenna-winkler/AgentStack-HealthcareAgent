@@ -7,6 +7,7 @@ from typing import Annotated
 from a2a.types import Message
 from a2a.utils.message import get_message_text
 from agentstack_sdk.a2a.extensions import LLMServiceExtensionServer, LLMServiceExtensionSpec
+from agentstack_sdk.a2a.extensions import PlatformApiExtensionServer, PlatformApiExtensionSpec
 from agentstack_sdk.a2a.types import AgentMessage
 from agentstack_sdk.server import Server
 from agentstack_sdk.server.context import RunContext
@@ -89,6 +90,7 @@ async def provider_agent_wrapper(
         LLMServiceExtensionServer,
         LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash-lite",)),
     ],
+    _: Annotated[PlatformApiExtensionServer, PlatformApiExtensionSpec()],
 ):
     """Wrapper around the provider agent using the AgentStack LLM extension."""
     # Pull the user's text prompt from the incoming message
