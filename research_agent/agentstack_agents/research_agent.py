@@ -16,6 +16,7 @@ from beeai_framework.emitter import Emitter
 
 from agentstack_sdk.server.context import RunContext
 from agentstack_sdk.server.store.platform_context_store import PlatformContextStore
+from agentstack_sdk.a2a.extensions import PlatformApiExtensionServer, PlatformApiExtensionSpec
 from agentstack_sdk.a2a.extensions.ui.agent_detail import EnvVar
 from agentstack_sdk.a2a.types import AgentMessage
 from agentstack_sdk.a2a.extensions import (
@@ -107,6 +108,7 @@ async def google_search_agent(
             suggested=("ibm-granite/granite-4.0-h-small",)
         )
     ],
+    _: Annotated[PlatformApiExtensionServer, PlatformApiExtensionSpec()],
 ):
     """Agent that provides information about health conditions, treatments, and procedures"""
     

@@ -7,6 +7,8 @@ from a2a.utils.message import get_message_text
 from agentstack_sdk.a2a.types import AgentMessage
 from agentstack_sdk.server import Server
 from agentstack_sdk.server.context import RunContext
+from agentstack_sdk.a2a.extensions import PlatformApiExtensionServer, PlatformApiExtensionSpec
+
 
 from agentstack_sdk.a2a.extensions import (
     AgentDetail,
@@ -96,6 +98,7 @@ async def healthcare_concierge(
         LLMServiceExtensionServer,
         LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash-lite",)),
     ],
+    _: Annotated[PlatformApiExtensionServer, PlatformApiExtensionSpec()],
 ):
     """
     Healthcare concierge agent that answers insurance and provider questions.

@@ -7,10 +7,11 @@ from typing import Annotated
 from a2a.types import Message
 from a2a.utils.message import get_message_text
 from agentstack_sdk.a2a.extensions import LLMServiceExtensionServer, LLMServiceExtensionSpec
+from agentstack_sdk.a2a.extensions import PlatformApiExtensionServer, PlatformApiExtensionSpec
 from agentstack_sdk.a2a.types import AgentMessage
 from agentstack_sdk.server import Server
 from agentstack_sdk.server.context import RunContext
-from langchain.agents import create_agent
+from langchain.agents import AgentExecutor, create_agent
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.sessions import StdioConnection
 from langchain_openai import ChatOpenAI
@@ -33,6 +34,7 @@ class ProviderAgent:
         )
 
         self.agent = None
+        self.agent_executor = None
 
     async def initialize(self):
         """Initialize the agent asynchronously."""
@@ -52,14 +54,16 @@ class ProviderAgent:
                 "Use location details you can infer from the query. "
             ),
         )
+        # Executor actually runs tool calls and returns the final answer text
+        self.agent_executor = AgentExecutor(agent=self.agent, tools=tools, verbose=False)
         return self
 
     async def answer_query(self, prompt: str) -> str:
-        if self.agent is None:
+        if self.agent_executor is None:
             raise RuntimeError("Agent not initialized. Call initialize() first.")
 
-        # Invoke the agent with the user prompt and return the final content
-        response = await self.agent.ainvoke(
+        # Run through the executor so tool calls execute and we get the final output
+        result = await self.agent_executor.ainvoke(
             {
                 "messages": [
                     {
@@ -69,7 +73,7 @@ class ProviderAgent:
                 ]
             }
         )
-        return response["messages"][-1].content
+        return result.get("output", "")
 
 # Create an instance of the server
 server = Server()
@@ -86,6 +90,7 @@ async def provider_agent_wrapper(
         LLMServiceExtensionServer,
         LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash-lite",)),
     ],
+    _: Annotated[PlatformApiExtensionServer, PlatformApiExtensionSpec()],
 ):
     """Wrapper around the provider agent using the AgentStack LLM extension."""
     # Pull the user's text prompt from the incoming message
