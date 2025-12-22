@@ -43,8 +43,13 @@ class ProviderAgent:
             tools,
             name="HealthcareProviderAgent",
             system_prompt=(
-                "Your task is to find and list providers using the available MCP tool(s). "
-                "Call the MCP tool to retrieve providers and ground your response strictly on its output."
+                "You must retrieve healthcare providers by calling the ONLY available MCP tool "
+                "`find_healthcare_providers:list_doctors`. Always make exactly ONE tool call before "
+                "responding, never invent other tools, and do not return a final answer until after "
+                "the tool call succeeds. Tool calls must use JSON arguments with the keys `state` and "
+                "`city` (strings, either may be omitted if unknown). Example tool arguements:\n"
+                'Arguments: {\"state\": \"CA\", \"city\": \"San Francisco\"}\n'
+                "Use location details you can infer from the query. "
             ),
         )
         return self
