@@ -11,7 +11,8 @@ from agentstack_sdk.a2a.extensions import PlatformApiExtensionServer, PlatformAp
 from agentstack_sdk.a2a.types import AgentMessage
 from agentstack_sdk.server import Server
 from agentstack_sdk.server.context import RunContext
-from langchain.agents import AgentExecutor, create_agent
+from langchain.agents.agent import create_agent
+from langchain.agents.agent_executor import AgentExecutor
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.sessions import StdioConnection
 from langchain_openai import ChatOpenAI
