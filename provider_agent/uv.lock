@@ -25,9 +25,12 @@ wheels = [
 
 [package.optional-dependencies]
 grpc = [
-    { name = "grpcio" },
-    { name = "grpcio-reflection" },
-    { name = "grpcio-tools" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "grpcio-reflection", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio-reflection", version = "1.71.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "grpcio-tools", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio-tools", version = "1.71.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
 ]
 http-server = [
     { name = "fastapi" },
@@ -408,7 +411,7 @@ wheels = [
 
 [[package]]
 name = "beeai-framework"
-version = "0.1.70"
+version = "0.1.74"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -417,21 +420,21 @@ dependencies = [
     { name = "deprecated" },
     { name = "json-repair" },
     { name = "jsonref" },
-    { name = "litellm", version = "1.80.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
-    { name = "litellm", version = "1.80.10", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "litellm" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a5/27/a26b1a55444de2271325d5471ba09e8a5f8c40bee25bf0f891eff52942ab/beeai_framework-0.1.70.tar.gz", hash = "sha256:7fe1b4f22015f8ea3ceffdbbaf1bba4ed390065d23c17aa3d406e25302ea24eb", size = 184126, upload-time = "2025-11-26T11:47:07.117Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/d5/19d2a202edf61e629148aa63ec35e0ca2a9073183a66499aaa8f36b1ff9f/beeai_framework-0.1.74.tar.gz", hash = "sha256:1b0dd9114e0099b0f43e63d8951f05407499e4c371e387e27ef123b803211c69", size = 189160, upload-time = "2025-12-22T12:57:49.157Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/50/fb1172b5c1625832b6589a1c6150197940b73c9aaeadfda4d7fef2067763/beeai_framework-0.1.70-py3-none-any.whl", hash = "sha256:a0e9350cc9a8360f2b8f2251ac96bcc41511ed24ac6f27bc7fb6c3e5dbc260e2", size = 340421, upload-time = "2025-11-26T11:47:05.498Z" },
+    { url = "https://files.pythonhosted.org/packages/5c/b0/62b5646b80f91930363fc01d12dea595d401d28445dd5e0744c97f0cf3bc/beeai_framework-0.1.74-py3-none-any.whl", hash = "sha256:9958f79ba917b3769572df6507513bdecf5ca4d2f62d22389e93a3f4b7dd9ac6", size = 347954, upload-time = "2025-12-22T12:57:47.806Z" },
 ]
 
 [package.optional-dependencies]
 a2a = [
     { name = "a2a-sdk", extra = ["grpc", "http-server", "telemetry"] },
-    { name = "grpcio-health-checking" },
+    { name = "grpcio-health-checking", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio-health-checking", version = "1.71.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "types-grpcio" },
     { name = "types-grpcio-health-checking" },
     { name = "types-grpcio-reflection" },
@@ -919,8 +922,8 @@ wheels = [
 
 [package.optional-dependencies]
 grpc = [
-    { name = "grpcio", marker = "python_full_version >= '3.14'" },
-    { name = "grpcio-status", marker = "python_full_version >= '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "grpcio-status", version = "1.71.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
 ]
 
 [[package]]
@@ -944,8 +947,8 @@ wheels = [
 
 [package.optional-dependencies]
 grpc = [
-    { name = "grpcio", marker = "python_full_version < '3.14'" },
-    { name = "grpcio-status", marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio-status", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
 ]
 
 [[package]]
@@ -1044,7 +1047,8 @@ dependencies = [
     { name = "google-api-core", version = "2.25.2", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version >= '3.14'" },
     { name = "google-api-core", version = "2.28.1", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version < '3.14'" },
     { name = "google-auth" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
@@ -1093,7 +1097,8 @@ dependencies = [
     { name = "google-api-core", version = "2.25.2", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version >= '3.14'" },
     { name = "google-api-core", version = "2.28.1", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version < '3.14'" },
     { name = "google-auth" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
@@ -1180,7 +1185,8 @@ dependencies = [
     { name = "google-api-core", version = "2.25.2", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version >= '3.14'" },
     { name = "google-api-core", version = "2.28.1", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version < '3.14'" },
     { name = "google-auth" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
@@ -1198,7 +1204,8 @@ dependencies = [
     { name = "google-api-core", version = "2.28.1", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version < '3.14'" },
     { name = "google-auth" },
     { name = "grpc-google-iam-v1" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
@@ -1216,7 +1223,8 @@ dependencies = [
     { name = "google-api-core", version = "2.28.1", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version < '3.14'" },
     { name = "google-auth" },
     { name = "grpc-google-iam-v1" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
@@ -1258,7 +1266,8 @@ dependencies = [
     { name = "google-api-core", version = "2.25.2", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version >= '3.14'" },
     { name = "google-api-core", version = "2.28.1", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version < '3.14'" },
     { name = "google-auth" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
@@ -1293,7 +1302,8 @@ dependencies = [
     { name = "google-api-core", version = "2.25.2", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version >= '3.14'" },
     { name = "google-api-core", version = "2.28.1", source = { registry = "https://pypi.org/simple" }, extra = ["grpc"], marker = "python_full_version < '3.14'" },
     { name = "google-auth" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "proto-plus" },
     { name = "protobuf" },
 ]
@@ -1386,7 +1396,8 @@ wheels = [
 
 [package.optional-dependencies]
 grpc = [
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
 ]
 
 [[package]]
@@ -1435,7 +1446,8 @@ version = "0.14.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "googleapis-common-protos", extra = ["grpc"] },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "protobuf" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/1e/1011451679a983f2f5c6771a1682542ecb027776762ad031fd0d7129164b/grpc_google_iam_v1-0.14.3.tar.gz", hash = "sha256:879ac4ef33136c5491a6300e27575a9ec760f6cdf9a2518798c1b8977a5dc389", size = 23745, upload-time = "2025-10-15T21:14:53.318Z" }
@@ -1448,7 +1460,8 @@ name = "grpc-interceptor"
 version = "0.15.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9f/28/57449d5567adf4c1d3e216aaca545913fbc21a915f2da6790d6734aac76e/grpc-interceptor-0.15.4.tar.gz", hash = "sha256:1f45c0bcb58b6f332f37c637632247c9b02bc6af0fdceb7ba7ce8d2ebbfb0926", size = 19322, upload-time = "2023-11-16T02:05:42.459Z" }
 wheels = [
@@ -1457,10 +1470,33 @@ wheels = [
 
 [[package]]
 name = "grpcio"
+version = "1.67.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.14'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/20/53/d9282a66a5db45981499190b77790570617a604a38f3d103d0400974aeb5/grpcio-1.67.1.tar.gz", hash = "sha256:3dc2ed4cabea4dc14d5e708c2b426205956077cc5de419b4d4079315017e9732", size = 12580022, upload-time = "2024-10-29T06:30:07.787Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/12/d2/2f032b7a153c7723ea3dea08bffa4bcaca9e0e5bdf643ce565b76da87461/grpcio-1.67.1-cp313-cp313-linux_armv7l.whl", hash = "sha256:aa0162e56fd10a5547fac8774c4899fc3e18c1aa4a4759d0ce2cd00d3696ea6b", size = 5091487, upload-time = "2024-10-29T06:24:57.416Z" },
+    { url = "https://files.pythonhosted.org/packages/d0/ae/ea2ff6bd2475a082eb97db1104a903cf5fc57c88c87c10b3c3f41a184fc0/grpcio-1.67.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:beee96c8c0b1a75d556fe57b92b58b4347c77a65781ee2ac749d550f2a365dc1", size = 10943530, upload-time = "2024-10-29T06:25:01.062Z" },
+    { url = "https://files.pythonhosted.org/packages/07/62/646be83d1a78edf8d69b56647327c9afc223e3140a744c59b25fbb279c3b/grpcio-1.67.1-cp313-cp313-manylinux_2_17_aarch64.whl", hash = "sha256:a93deda571a1bf94ec1f6fcda2872dad3ae538700d94dc283c672a3b508ba3af", size = 5589079, upload-time = "2024-10-29T06:25:04.254Z" },
+    { url = "https://files.pythonhosted.org/packages/d0/25/71513d0a1b2072ce80d7f5909a93596b7ed10348b2ea4fdcbad23f6017bf/grpcio-1.67.1-cp313-cp313-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:0e6f255980afef598a9e64a24efce87b625e3e3c80a45162d111a461a9f92955", size = 6213542, upload-time = "2024-10-29T06:25:06.824Z" },
+    { url = "https://files.pythonhosted.org/packages/76/9a/d21236297111052dcb5dc85cd77dc7bf25ba67a0f55ae028b2af19a704bc/grpcio-1.67.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9e838cad2176ebd5d4a8bb03955138d6589ce9e2ce5d51c3ada34396dbd2dba8", size = 5850211, upload-time = "2024-10-29T06:25:10.149Z" },
+    { url = "https://files.pythonhosted.org/packages/2d/fe/70b1da9037f5055be14f359026c238821b9bcf6ca38a8d760f59a589aacd/grpcio-1.67.1-cp313-cp313-musllinux_1_1_i686.whl", hash = "sha256:a6703916c43b1d468d0756c8077b12017a9fcb6a1ef13faf49e67d20d7ebda62", size = 6572129, upload-time = "2024-10-29T06:25:12.853Z" },
+    { url = "https://files.pythonhosted.org/packages/74/0d/7df509a2cd2a54814598caf2fb759f3e0b93764431ff410f2175a6efb9e4/grpcio-1.67.1-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:917e8d8994eed1d86b907ba2a61b9f0aef27a2155bca6cbb322430fc7135b7bb", size = 6149819, upload-time = "2024-10-29T06:25:15.803Z" },
+    { url = "https://files.pythonhosted.org/packages/0a/08/bc3b0155600898fd10f16b79054e1cca6cb644fa3c250c0fe59385df5e6f/grpcio-1.67.1-cp313-cp313-win32.whl", hash = "sha256:e279330bef1744040db8fc432becc8a727b84f456ab62b744d3fdb83f327e121", size = 3596561, upload-time = "2024-10-29T06:25:19.348Z" },
+    { url = "https://files.pythonhosted.org/packages/5a/96/44759eca966720d0f3e1b105c43f8ad4590c97bf8eb3cd489656e9590baa/grpcio-1.67.1-cp313-cp313-win_amd64.whl", hash = "sha256:fa0c739ad8b1996bd24823950e3cb5152ae91fca1c09cc791190bf1627ffefba", size = 4346042, upload-time = "2024-10-29T06:25:21.939Z" },
+]
+
+[[package]]
+name = "grpcio"
 version = "1.76.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.14'",
+]
 dependencies = [
-    { name = "typing-extensions" },
+    { name = "typing-extensions", marker = "python_full_version >= '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b6/e0/318c1ce3ae5a17894d5791e87aea147587c9e702f24122cc7a5c8bbaeeb1/grpcio-1.76.0.tar.gz", hash = "sha256:7be78388d6da1a25c0d5ec506523db58b18be22d9c37d8d3a32c08be4987bd73", size = 12785182, upload-time = "2025-10-21T16:23:12.106Z" }
 wheels = [
@@ -1488,11 +1524,30 @@ wheels = [
 
 [[package]]
 name = "grpcio-health-checking"
+version = "1.67.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.14'",
+]
+dependencies = [
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "protobuf", marker = "python_full_version < '3.14'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/64/dd/e3b339fa44dc75b501a1a22cb88f1af5b1f8c964488f19c4de4cfbbf05ba/grpcio_health_checking-1.67.1.tar.gz", hash = "sha256:ca90fa76a6afbb4fda71d734cb9767819bba14928b91e308cffbb0c311eb941e", size = 16775, upload-time = "2024-10-29T06:30:16.487Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5c/8d/7a9878dca6616b48093d71c52d0bc79cb2dd1a2698ff6f5ce7406306de12/grpcio_health_checking-1.67.1-py3-none-any.whl", hash = "sha256:93753da5062152660aef2286c9b261e07dd87124a65e4dc9fbd47d1ce966b39d", size = 18924, upload-time = "2024-10-29T06:26:25.535Z" },
+]
+
+[[package]]
+name = "grpcio-health-checking"
 version = "1.71.2"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.14'",
+]
 dependencies = [
-    { name = "grpcio" },
-    { name = "protobuf" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "protobuf", marker = "python_full_version >= '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/53/86/20994347ef36b7626fb74539f13128100dd8b7eaac67efc063264e6cdc80/grpcio_health_checking-1.71.2.tar.gz", hash = "sha256:1c21ece88c641932f432b573ef504b20603bdf030ad4e1ec35dd7fdb4ea02637", size = 16770, upload-time = "2025-06-28T04:24:08.768Z" }
 wheels = [
@@ -1501,11 +1556,30 @@ wheels = [
 
 [[package]]
 name = "grpcio-reflection"
+version = "1.67.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.14'",
+]
+dependencies = [
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "protobuf", marker = "python_full_version < '3.14'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/17/61/618d56bd1f7069dea5fee8fa6efb5e6548b6edb52000ef1a7b242c0c1b04/grpcio_reflection-1.67.1.tar.gz", hash = "sha256:507d9785a72032816e9bb5add4a660c655813a6bc1537b957822c652c88bf458", size = 18836, upload-time = "2024-10-29T06:30:20.914Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/03/6d/05a8f610b4865c4c45679a01395e7094716f23ad584d1f9f2b817c6c7060/grpcio_reflection-1.67.1-py3-none-any.whl", hash = "sha256:622a2d0712a77f97df4ef0dc341d459e7559a3712d0d93a3d3e5e5a381c39b00", size = 22688, upload-time = "2024-10-29T06:27:37.022Z" },
+]
+
+[[package]]
+name = "grpcio-reflection"
 version = "1.71.2"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.14'",
+]
 dependencies = [
-    { name = "grpcio" },
-    { name = "protobuf" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "protobuf", marker = "python_full_version >= '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/41/14/4e5f8e902fa9461abae292773b921a578f68333c7c3e731bcff7514f78cd/grpcio_reflection-1.71.2.tar.gz", hash = "sha256:bedfac3d2095d6c066b16b66bfce85b4be3e92dc9f3b7121e6f019d24a9c09c0", size = 18798, upload-time = "2025-06-28T04:24:06.019Z" }
 wheels = [
@@ -1514,12 +1588,32 @@ wheels = [
 
 [[package]]
 name = "grpcio-status"
+version = "1.67.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.14'",
+]
+dependencies = [
+    { name = "googleapis-common-protos", marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "protobuf", marker = "python_full_version < '3.14'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/be/c7/fe0e79a80ac6346e0c6c0a24e9e3cbc3ae1c2a009acffb59eab484a6f69b/grpcio_status-1.67.1.tar.gz", hash = "sha256:2bf38395e028ceeecfd8866b081f61628114b384da7d51ae064ddc8d766a5d11", size = 13673, upload-time = "2024-10-29T06:30:21.787Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/05/18/56999a1da3577d8ccc8698a575d6638e15fe25650cc88b2ce0a087f180b9/grpcio_status-1.67.1-py3-none-any.whl", hash = "sha256:16e6c085950bdacac97c779e6a502ea671232385e6e37f258884d6883392c2bd", size = 14427, upload-time = "2024-10-29T06:27:38.228Z" },
+]
+
+[[package]]
+name = "grpcio-status"
 version = "1.71.2"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.14'",
+]
 dependencies = [
-    { name = "googleapis-common-protos" },
-    { name = "grpcio" },
-    { name = "protobuf" },
+    { name = "googleapis-common-protos", marker = "python_full_version >= '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "protobuf", marker = "python_full_version >= '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fd/d1/b6e9877fedae3add1afdeae1f89d1927d296da9cf977eca0eb08fb8a460e/grpcio_status-1.71.2.tar.gz", hash = "sha256:c7a97e176df71cdc2c179cd1847d7fc86cca5832ad12e9798d7fed6b7a1aab50", size = 13677, upload-time = "2025-06-28T04:24:05.426Z" }
 wheels = [
@@ -1528,12 +1622,40 @@ wheels = [
 
 [[package]]
 name = "grpcio-tools"
+version = "1.67.1"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.14'",
+]
+dependencies = [
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "protobuf", marker = "python_full_version < '3.14'" },
+    { name = "setuptools", marker = "python_full_version < '3.14'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ae/f9/6facde12a5a8da4398a3a8947f8ba6ef33b408dfc9767c8cefc0074ddd68/grpcio_tools-1.67.1.tar.gz", hash = "sha256:d9657f5ddc62b52f58904e6054b7d8a8909ed08a1e28b734be3a707087bcf004", size = 5159073, upload-time = "2024-10-29T06:30:25.522Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/62/b3/91c88440c978740752d39f1abae83f21408048b98b93652ebd84f974ad3d/grpcio_tools-1.67.1-cp313-cp313-linux_armv7l.whl", hash = "sha256:9a3b9510cc87b6458b05ad49a6dee38df6af37f9ee6aa027aa086537798c3d4a", size = 2307453, upload-time = "2024-10-29T06:28:45.298Z" },
+    { url = "https://files.pythonhosted.org/packages/05/33/faf3330825463c0409fa3891bc1459bf86a00055b19790211365279538d7/grpcio_tools-1.67.1-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:9e4c9b9fa9b905f15d414cb7bd007ba7499f8907bdd21231ab287a86b27da81a", size = 5517975, upload-time = "2024-10-29T06:28:48.095Z" },
+    { url = "https://files.pythonhosted.org/packages/bd/78/461ab34cadbd0b5b9a0b6efedda96b58e0de471e3fa91d8e4a4e31924e1b/grpcio_tools-1.67.1-cp313-cp313-manylinux_2_17_aarch64.whl", hash = "sha256:e11a98b41af4bc88b7a738232b8fa0306ad82c79fa5d7090bb607f183a57856f", size = 2281081, upload-time = "2024-10-29T06:28:50.39Z" },
+    { url = "https://files.pythonhosted.org/packages/5f/0c/b30bdbcab1795b12e05adf30c20981c14f66198e22044edb15b3c1d9f0bc/grpcio_tools-1.67.1-cp313-cp313-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:de0fcfe61c26679d64b1710746f2891f359593f76894fcf492c37148d5694f00", size = 2616929, upload-time = "2024-10-29T06:28:52.667Z" },
+    { url = "https://files.pythonhosted.org/packages/d3/c2/a77ca68ae768f8d5f1d070ea4afc42fda40401083e7c4f5c08211e84de38/grpcio_tools-1.67.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7ae3b3e2ee5aad59dece65a613624c46a84c9582fc3642686537c6dfae8e47dc", size = 2414633, upload-time = "2024-10-29T06:28:55.089Z" },
+    { url = "https://files.pythonhosted.org/packages/39/70/8d7131dccfe4d7b739c96ada7ea9acde631f58f013eae773791fb490a3eb/grpcio_tools-1.67.1-cp313-cp313-musllinux_1_1_i686.whl", hash = "sha256:9a630f83505b6471a3094a7a372a1240de18d0cd3e64f4fbf46b361bac2be65b", size = 3224328, upload-time = "2024-10-29T06:28:58.024Z" },
+    { url = "https://files.pythonhosted.org/packages/2a/28/2d24b933ccf0d6877035aa3d5f8b64aad18c953657dd43c682b5701dc127/grpcio_tools-1.67.1-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:d85a1fcbacd3e08dc2b3d1d46b749351a9a50899fa35cf2ff040e1faf7d405ad", size = 2869640, upload-time = "2024-10-29T06:29:00.472Z" },
+    { url = "https://files.pythonhosted.org/packages/37/77/ddd2b4cc896639fb0f85fc21d5684f25080ee28845c5a4031e3dd65fdc92/grpcio_tools-1.67.1-cp313-cp313-win32.whl", hash = "sha256:778470f025f25a1fca5a48c93c0a18af395b46b12dd8df7fca63736b85181f41", size = 939997, upload-time = "2024-10-29T06:29:03.426Z" },
+    { url = "https://files.pythonhosted.org/packages/96/d0/f0855a0ccb26ffeb41e6db68b5cbb25d7e9ba1f8f19151eef36210e64efc/grpcio_tools-1.67.1-cp313-cp313-win_amd64.whl", hash = "sha256:6961da86e9856b4ddee0bf51ef6636b4bf9c29c0715aa71f3c8f027c45d42654", size = 1089819, upload-time = "2024-10-29T06:29:06.113Z" },
+]
+
+[[package]]
+name = "grpcio-tools"
 version = "1.71.2"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.14'",
+]
 dependencies = [
-    { name = "grpcio" },
-    { name = "protobuf" },
-    { name = "setuptools" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "protobuf", marker = "python_full_version >= '3.14'" },
+    { name = "setuptools", marker = "python_full_version >= '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ad/9a/edfefb47f11ef6b0f39eea4d8f022c5bb05ac1d14fcc7058e84a51305b73/grpcio_tools-1.71.2.tar.gz", hash = "sha256:b5304d65c7569b21270b568e404a5a843cf027c66552a6a0978b23f137679c09", size = 5330655, upload-time = "2025-06-28T04:22:00.308Z" }
 wheels = [
@@ -1983,51 +2105,23 @@ wheels = [
 
 [[package]]
 name = "litellm"
-version = "1.80.5"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version < '3.14'",
-]
-dependencies = [
-    { name = "aiohttp", marker = "python_full_version < '3.14'" },
-    { name = "click", marker = "python_full_version < '3.14'" },
-    { name = "fastuuid", marker = "python_full_version < '3.14'" },
-    { name = "httpx", marker = "python_full_version < '3.14'" },
-    { name = "importlib-metadata", marker = "python_full_version < '3.14'" },
-    { name = "jinja2", marker = "python_full_version < '3.14'" },
-    { name = "jsonschema", marker = "python_full_version < '3.14'" },
-    { name = "openai", marker = "python_full_version < '3.14'" },
-    { name = "pydantic", marker = "python_full_version < '3.14'" },
-    { name = "python-dotenv", marker = "python_full_version < '3.14'" },
-    { name = "tiktoken", marker = "python_full_version < '3.14'" },
-    { name = "tokenizers", marker = "python_full_version < '3.14'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/85/b8/357544534bef87dd2858432f3cbd3a0e5cc267caebca5ea86b03618786c5/litellm-1.80.5.tar.gz", hash = "sha256:922791c264845d9ed59e540c8fa74a74d237c1b209568a05ffeacd8b51770deb", size = 11885764, upload-time = "2025-11-22T23:41:42.25Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bd/af/1d4693746ff9fbbe27a6e7d6394b801acf234e00c83f45ad1cb5bf2eaa6c/litellm-1.80.5-py3-none-any.whl", hash = "sha256:2ac5f4e88cd57ae056e00da8f872e1c2956653750929fba2fd9b007b400fdb77", size = 10671970, upload-time = "2025-11-22T23:41:39.923Z" },
-]
-
-[[package]]
-name = "litellm"
 version = "1.80.10"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version >= '3.14'",
-]
 dependencies = [
-    { name = "aiohttp", marker = "python_full_version >= '3.14'" },
-    { name = "click", marker = "python_full_version >= '3.14'" },
-    { name = "fastuuid", marker = "python_full_version >= '3.14'" },
-    { name = "grpcio", marker = "python_full_version >= '3.14'" },
-    { name = "httpx", marker = "python_full_version >= '3.14'" },
-    { name = "importlib-metadata", marker = "python_full_version >= '3.14'" },
-    { name = "jinja2", marker = "python_full_version >= '3.14'" },
-    { name = "jsonschema", marker = "python_full_version >= '3.14'" },
-    { name = "openai", marker = "python_full_version >= '3.14'" },
-    { name = "pydantic", marker = "python_full_version >= '3.14'" },
-    { name = "python-dotenv", marker = "python_full_version >= '3.14'" },
-    { name = "tiktoken", marker = "python_full_version >= '3.14'" },
-    { name = "tokenizers", marker = "python_full_version >= '3.14'" },
+    { name = "aiohttp" },
+    { name = "click" },
+    { name = "fastuuid" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
+    { name = "httpx" },
+    { name = "importlib-metadata" },
+    { name = "jinja2" },
+    { name = "jsonschema" },
+    { name = "openai" },
+    { name = "pydantic" },
+    { name = "python-dotenv" },
+    { name = "tiktoken" },
+    { name = "tokenizers" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/dd/44/0aaa7449e7c4aa05668ec03f1f68a01b1e476591071d9659a68db19371a2/litellm-1.80.10.tar.gz", hash = "sha256:4a4aff7558945c2f7e5c6523e67c1b5525a46b10b0e1ad6b8f847cb13b16779e", size = 12764777, upload-time = "2025-12-14T02:07:05.362Z" }
 wheels = [
@@ -2477,7 +2571,8 @@ version = "1.37.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "googleapis-common-protos" },
-    { name = "grpcio" },
+    { name = "grpcio", version = "1.67.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.14'" },
+    { name = "grpcio", version = "1.76.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.14'" },
     { name = "opentelemetry-api" },
     { name = "opentelemetry-exporter-otlp-proto-common" },
     { name = "opentelemetry-proto" },
@@ -2960,7 +3055,7 @@ requires-dist = [
     { name = "agent-framework-a2a", specifier = "==1.0.0b251120" },
     { name = "agentstack-sdk", specifier = "==0.4.3" },
     { name = "anthropic", extras = ["vertex"], specifier = "==0.72.0" },
-    { name = "beeai-framework", extras = ["a2a", "vertexai"], specifier = "==0.1.70" },
+    { name = "beeai-framework", extras = ["a2a", "vertexai"], specifier = "==0.1.74" },
     { name = "dotenv", specifier = ">=0.9.9" },
     { name = "google-adk", extras = ["a2a"], specifier = "==1.19.0" },
     { name = "google-auth", specifier = "==2.42.0" },
