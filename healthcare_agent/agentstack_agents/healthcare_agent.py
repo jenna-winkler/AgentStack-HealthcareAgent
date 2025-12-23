@@ -98,7 +98,7 @@ async def healthcare_concierge(
         LLMServiceExtensionServer,
         LLMServiceExtensionSpec.single_demand(suggested=("gemini:gemini-2.5-flash-lite",)),
     ],
-    _: Annotated[PlatformApiExtensionServer, PlatformApiExtensionSpec()],
+    platform_api: Annotated[PlatformApiExtensionServer, PlatformApiExtensionSpec()],
 ):
     """
     Healthcare concierge agent that answers insurance and provider questions.
@@ -140,7 +140,8 @@ async def healthcare_concierge(
 
 
     # Make other AgentStack agents discoverable that have been deployed to the platform and make them available via handoff tools
-    agents = await AgentStackAgent.from_agent_stack()
+    async with platform_api.use_client() as client:
+        agents = await AgentStackAgent.from_agent_stack(url=client)
     handoff_agents = {a.name: a for a in agents if a.name in {"PolicyAgent", "ResearchAgent", "ProviderAgent"}}
     print([a.name for a in agents])
     policy_handoff = HandoffTool(handoff_agents["PolicyAgent"])
